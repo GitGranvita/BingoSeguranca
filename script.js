@@ -85,7 +85,7 @@ const epis = [
         <div class="numero">${epi.numero}</div>
         <div class="nome">${epi.nome.toUpperCase()}</div>
       `;
-      historico.appendChild(item);
+      historico.prepend(item);
 
       sorteados.add(epi.numero); // marca como já mostrado
       document.getElementById("numeroInput").value = "";
