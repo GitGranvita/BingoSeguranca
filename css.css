@@ -1,0 +1,157 @@
+ * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 100px; /* espaço para o botão fixo */
+        background-image: url('img/fundo.png'); /* Caminho da imagem */
+        background-size: cover;       /* Faz a imagem cobrir toda a tela */
+        background-position: center;  /* Centraliza a imagem */
+        background-repeat: no-repeat; /* Evita repetição */
+        background-attachment: fixed; /* Mantém a imagem fixa no fundo mesmo com scroll */
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+    }
+
+    .imagem-central {
+      width: 200px;
+      margin: 40px 0 20px;
+    }
+
+    .sorteado {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+          max-width: 500px;
+    }
+
+    .foto-epi {
+      width: 280px;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 2px solid #ccc;
+    }
+
+    .numero-epi {
+      font-size: 50px;
+      font-weight: bold;
+      color: #222;
+      margin-bottom: 5px;
+    }
+
+  .nome-epi {
+  display: flex;
+  justify-content: center;     /* Centraliza na horizontal */
+  align-items: center;         /* Centraliza na vertical */
+  font-size: 45px;
+  color: #3f5c5a;
+  font-weight: bold;
+  height: 100%;                /* Garante que o elemento ocupe o espaço vertical do pai */
+  text-align: center;          /* Garante centralização do texto em múltiplas linhas */
+}
+     .desc-epi {
+       display: flex;
+       justify-content: center;     /* Centraliza na horizontal */
+  align-items: center;         /* Centraliza na vertical */
+      font-size: 25px;
+      color: #2ea983;
+      font-weight: bold;
+      height: 100%;                /* Garante que o elemento ocupe o espaço vertical do pai */
+  text-align: center;          /* Garante centralização do texto em múltiplas linhas */
+    }
+
+    .historico {
+        width: 100%;
+        overflow-x: auto;  /* Rolagem horizontal */
+        overflow-y: hidden;
+        display: flex;
+        flex-wrap: nowrap;  /* Impede quebra de linha */
+        gap: 15px;
+        padding: 10px;
+        box-sizing: border-box;
+        
+      }
+      
+
+      .item-historico {
+        flex: 0 0 auto; /* Impede que quebre ou estique */
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        width: 120px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+      
+
+    .item-historico img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 5px;
+    }
+
+    .item-historico .numero {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .item-historico .nome {
+      font-size: 14px;
+    }
+
+    .botao-fixo {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 999;
+      }
+
+      
+    .botao-fixo input[type="number"] {
+      font-size: 18px;
+      padding: 8px;
+      width: 100px;
+      margin-right: 10px;
+    }
+
+    .botao-fixo button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .botao-fixo button:hover {
+      background-color: #0052a3;
+    }

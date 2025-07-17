@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<title>Cartelas - Bingo SIPAT</title>
+<style>
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+  @media print {
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .pagina {
+      page-break-after: always;
+    }
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pagina {
+    width: 280mm;  /* A4 paisagem útil */
+    height: 190mm; /* Altura útil para 2 linhas */
+    /*background: white;*/
+    padding: 5mm 7mm;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8mm 10mm;
+    margin-bottom: 10mm;
+  }
+  .cartela {
+    width: 130mm;  /* metade da largura da página - margens */
+    height: 90mm;  /* metade da altura da página - margens */
+    border: 2px solid #333;
+    padding: 5mm;
+    background: #fff;
+    box-sizing: border-box;
+    page-break-inside: avoid;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .titulo {
+    font-weight: bold;
+    font-size: 14pt;
+    text-align: center;
+    margin-bottom: 4px;
+    user-select: none;
+        color: #2ea983;
+  }
+  .grade {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 4px;
+    flex-grow: 1;
+    user-select: none;
+  }
+  .item {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 1px 2px;
+    font-size: 5.5pt;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .item img {
+    width: 100%;
+    max-height: 12mm;
+    object-fit: contain;
+    margin-bottom: 2px;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .num {
+    font-weight: bold;
+    font-size: 6pt;
+    line-height: 1;
+  }
+  .nome {
+    font-size: 5pt;
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    color: #3f5c5a;
+  }
+</style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    const epis = [
+      "Capacete de segurança", "Óculos de proteção", "Protetor auricular tipo plug", "Protetor auricular tipo concha",
+      "Luva de raspa", "Luva de vaqueta", "Luva de borracha", "Luva nitrílica", "Luva térmica", "Luva antiestática",
+      "Luva anticorte", "Luva para eletricista", "Luva de malha de aço", "Máscara PFF1", "Máscara PFF2",
+      "Respirador semifacial", "Respirador facial completo", "Filtro químico para respirador", "Avental de PVC",
+      "Avental de raspa", "Avental de vaqueta", "Avental térmico", "Bota de PVC", "Bota com biqueira de aço",
+      "Bota antiderrapante", "Sapato de segurança", "Perneira de raspa", "Calça anti-chamas", "Jaqueta anti-chamas",
+      "Cinturão tipo paraquedista", "Capacete com jugular", "Protetor facial", "Óculos com lente incolor",
+      "Óculos com lente escura", "Óculos panorâmico", "Máscara de solda", "Máscara de solda automática",
+      "Colete refletivo", "Capa de chuva", "Camisa de manga longa", "Kit de primeiros socorros individual",
+      "Extintor de incêndio", "Chuveiro de emergência", "Mangueira de Hidrante", "Placa uso obrigatório de EPI",
+      "Placa proibido fumar", "Placa risco 220 volts", "Placa proibido uso do celular", "Placa aviso de acesso restrito",
+      "Placa use o corrimão", "Placa piso escorregadio"
+    ];
+
+    const totalCartelas = 52;
+    const cartelasPorPagina = 4;
+    const totalPaginas = Math.ceil(totalCartelas / cartelasPorPagina);
+
+    function embaralhar(array) {
+      const copia = [...array];
+      for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copia[i], copia[j]] = [copia[j], copia[i]];
+      }
+      return copia;
+    }
+
+    function criarCartela(episCompletos) {
+      const grade = document.createElement("div");
+      grade.className = "grade";
+
+      episCompletos.forEach(epi => {
+        const item = document.createElement("div");
+        item.className = "item";
+        item.innerHTML = `
+          <img src="img/${epi.numero}.png" alt="EPI ${epi.numero}">
+          <div class="num">N° ${epi.numero}</div>
+          <div class="nome" title="${epi.nome}"><b>${epi.nome.toUpperCase()}</b></div>
+        `;
+        grade.appendChild(item);
+      });
+
+      const cartela = document.createElement("div");
+      cartela.className = "cartela";
+      cartela.innerHTML = `<div class="titulo">BINGO DA SEGURANÇA - 2025</div>`;
+      cartela.appendChild(grade);
+
+      return cartela;
+    }
+
+    function gerarPaginas() {
+      const container = document.getElementById("container");
+
+      for(let pagina = 0; pagina < totalPaginas; pagina++) {
+        const paginaDiv = document.createElement("div");
+        paginaDiv.className = "pagina";
+
+        for(let c = 0; c < cartelasPorPagina; c++) {
+          const cartelaIndex = pagina * cartelasPorPagina + c;
+          if(cartelaIndex >= totalCartelas) break;
+
+          const indices = embaralhar([...Array(epis.length).keys()]).slice(0, 16);
+          const cartelaEpis = indices.map(k => ({
+            numero: k + 1,
+            nome: epis[k]
+          }));
+          cartelaEpis.sort((a, b) => a.numero - b.numero);
+
+          const cartela = criarCartela(cartelaEpis);
+          paginaDiv.appendChild(cartela);
+        }
+
+        container.appendChild(paginaDiv);
+      }
+    }
+
+    gerarPaginas();
+  </script>
+</body>
+</html>

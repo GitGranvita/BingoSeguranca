@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cartelas - Bingo SIPAT</title>
+  <style>
+    @media print {
+      body {
+        margin: 0;
+      }
+
+      .pagina {
+        page-break-after: always;
+      }
+
+      .linha-cartelas {
+        break-inside: avoid;
+      }
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .pagina {
+      width: 210mm;
+      height: 297mm;
+      padding: 10mm;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .linha-cartelas {
+      display: flex;
+      justify-content: space-between;
+      gap: 10mm;
+      flex: 1;
+    }
+
+    .cartela {
+      width: 48%;
+      border: 2px solid #333;
+      padding: 5mm;
+      background: #fff;
+      box-sizing: border-box;
+      page-break-inside: avoid;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .titulo {
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5mm;
+    }
+
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 3mm;
+      flex: 1;
+    }
+
+    .item {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 2mm;
+      font-size: 9px;
+    }
+
+    .item img {
+      width: 100%;
+      height: 50px;
+      object-fit: contain;
+      margin-bottom: 2mm;
+    }
+
+    .num {
+      font-weight: bold;
+      font-size: 10px;
+    }
+
+    .nome {
+      font-size: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="pagina"></div>
+
+  <script>
+    const epis = [
+      "Capacete de segurança", "Óculos de proteção", "Protetor auricular tipo plug", "Protetor auricular tipo concha",
+      "Luva de raspa", "Luva de vaqueta", "Luva de borracha", "Luva nitrílica", "Luva térmica", "Luva antiestática",
+      "Luva anticorte", "Luva para eletricista", "Luva de malha de aço", "Máscara PFF1", "Máscara PFF2",
+      "Respirador semifacial", "Respirador facial completo", "Filtro químico para respirador", "Avental de PVC",
+      "Avental de raspa", "Avental de vaqueta", "Avental térmico", "Bota de PVC", "Bota com biqueira de aço",
+      "Bota antiderrapante", "Sapato de segurança", "Perneira de raspa", "Calça anti-chamas", "Jaqueta anti-chamas",
+      "Cinturão tipo paraquedista", "Capacete com jugular", "Protetor facial", "Óculos com lente incolor",
+      "Óculos com lente escura", "Óculos panorâmico", "Máscara de solda", "Máscara de solda automática",
+      "Colete refletivo", "Capa de chuva", "Camisa de manga longa", "Kit de primeiros socorros individual",
+      "Extintor de incêndio", "Chuveiro de emergência", "Mangueira de Hidrante", "Placa uso obrigatório de EPI",
+      "Placa proibido fumar", "Placa risco 220 volts", "Placa proibido uso do celular", "Placa aviso de acesso restrito",
+      "Placa use o corrimão", "Placa piso escorregadio"
+    ];
+
+    const qtdCartelas = 50;
+
+    function embaralhar(array) {
+      const copia = [...array];
+      for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copia[i], copia[j]] = [copia[j], copia[i]];
+      }
+      return copia;
+    }
+
+    function criarCartela(episCompletos) {
+      const grade = document.createElement("div");
+      grade.className = "grade";
+
+      episCompletos.forEach((epi) => {
+        const item = document.createElement("div");
+        item.className = "item";
+        item.innerHTML = `
+          <img src="img/${epi.numero}.png" alt="EPI ${epi.numero}">
+          <div class="num">#${epi.numero}</div>
+          <div class="nome">${epi.nome}</div>
+        `;
+        grade.appendChild(item);
+      });
+
+      const cartela = document.createElement("div");
+      cartela.className = "cartela";
+      cartela.innerHTML = `<div class="titulo">Bingo SIPAT</div>`;
+      cartela.appendChild(grade);
+
+      return cartela;
+    }
+
+    function gerarCartelas() {
+      const container = document.getElementById("pagina");
+
+      for (let i = 0; i < qtdCartelas; i += 4) {
+        const pagina = document.createElement("div");
+        pagina.className = "pagina";
+
+        for (let l = 0; l < 2; l++) {
+          const linha = document.createElement("div");
+          linha.className = "linha-cartelas";
+
+          for (let j = 0; j < 2; j++) {
+            const indiceCartela = i + l * 2 + j;
+            if (indiceCartela >= qtdCartelas) break;
+
+            const indices = embaralhar([...Array(51).keys()]).slice(0, 16);
+            const cartelaEpis = indices.map(k => ({
+              numero: k + 1,
+              nome: epis[k]
+            }));
+
+            const cartela = criarCartela(cartelaEpis);
+            linha.appendChild(cartela);
+          }
+
+          pagina.appendChild(linha);
+        }
+
+        container.appendChild(pagina);
+      }
+    }
+
+    gerarCartelas();
+  </script>
+</body>
+</html>
